@@ -7,8 +7,8 @@ pygame.init()
 police = pygame.font.SysFont("monospace", 60)
 
 def InitAcceuil(fenetre):
-    top = pygame.image.load("Interface/Acceuil/Acceuil-top.png")
-    vaultboy = pygame.image.load("Interface/Acceuil/Vault132-194.png")
+    top = pygame.image.load("Interface/Accueil/Accueil-top.png")
+    vaultboy = pygame.image.load("Interface/Accueil/Vault132-194.png")
     fenetre.blit(top, (0, 0))
     fenetre.blit(vaultboy, (10, 76))
     pygame.display.flip()
