@@ -5,6 +5,7 @@ import os
 pygame.init()
 
 police = pygame.font.SysFont("monospace", 20)
+police_2= pygame.font.SysFont("monospace", 30)
 liste_fichiers=[]
 MAX = 10
 DEBUT = 50
@@ -44,6 +45,10 @@ def Print(fenetre ,path, k):
         height += 20
         print(k)
     print("fin for")
+
+    
+    label = police_2.render("Lel", 1, (0, 255, 0))
+    fenetre.blit(label, (150, 60))
     return k
 
 
