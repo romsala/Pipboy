@@ -5,7 +5,6 @@ import os
 pygame.init()
 
 
-
 police = pygame.font.SysFont("monospace", 18)
 putain = pygame.font.SysFont("monospace", 30)
 liste_fichiers=[]
@@ -30,7 +29,7 @@ def GetListeFichiers(path):
         if os.path.isdir(file):
             file += "/"
         liste_fichiers.append(file)
-    liste_fichiers.so
+
 
 
 def Print(fenetre ,path, k):
