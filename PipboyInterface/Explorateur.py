@@ -23,17 +23,16 @@ def InitExplorateur(fenetre):
 
 
 def GetListeFichiers(path):
-    global liste_fichiers
     liste_fichiers = []
     for file in os.listdir(path):
         if os.path.isdir(file):
             file += "/"
         liste_fichiers.append(file)
-
+    return liste_fichiers
 
 
 def Print(fenetre ,path, k):
-    GetListeFichiers(path)
+    liste_fichiers = GetListeFichiers(path)
     if(path == "."):
         path = "RACINE"
     cur = putain.render(path, 1, (0, 255, 0))
