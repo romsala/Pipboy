@@ -10,11 +10,11 @@ pygame.init()
 
 fenetre = pygame.display.set_mode((480, 320))
 
-rect_explo = pygame.Rect(13, 6, 125, 27)
-rect_music = pygame.Rect(126, 6, 210, 27)
-rect_accueil = pygame.Rect(211, 6, 290, 27)
-rect_divers = pygame.Rect(291, 6, 361, 27)
-rect_options = pygame.Rect(362, 6, 448, 27)
+rect_explo = pygame.Rect(13, 6, 112, 21)
+rect_music = pygame.Rect(126, 6, 84, 21)
+rect_accueil = pygame.Rect(211, 6, 79, 21)
+rect_divers = pygame.Rect(291, 6, 70, 21)
+rect_options = pygame.Rect(362, 6, 86, 21)
 
 screen = 3
 
@@ -31,7 +31,6 @@ while continuer:
             if rect_explo.collidepoint(pos) and screen != 1:
                 Explorateur.InitExplorateur(fenetre)
                 screen = 1
-                Explorateur.GetListeFichiers("D:/Projets/Pipboy/Pipboy/PipboyInterface/")
             if rect_music.collidepoint(pos) and screen != 2:
                 Musique.InitMusique(fenetre)
                 screen = 2
