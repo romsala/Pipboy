@@ -109,7 +109,7 @@ def AjouterElementPlaylist(nom_playlist, musique):
         print("Playlist n'existe pas")
 
 
-def SupprimerElementPlaylist(nom_playlist, musique):  # Supprime maintenant TOUT les éléments portant ce nom dans la playlist
+def SupprimerElementPlaylist(nom_playlist, musique):
     if VerifierExistencePlaylist(nom_playlist):
         chemin_playlist = "Musiques/Playlist/"+nom_playlist+".txt"
         buffer = []
