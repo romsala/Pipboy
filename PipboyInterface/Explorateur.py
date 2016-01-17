@@ -4,7 +4,10 @@ import os
 
 pygame.init()
 
-police = pygame.font.SysFont("monospace", 20)
+
+
+police = pygame.font.SysFont("monospace", 18)
+putain = pygame.font.SysFont("monospace", 30)
 liste_fichiers=[]
 MAX = 10
 DEBUT = 50
@@ -24,17 +27,19 @@ def GetListeFichiers(path):
     global liste_fichiers
     liste_fichiers = []
     for file in os.listdir(path):
-        if file.endswith("/", 0, len(file)):
-            file.__add__("/")
+        if os.path.isdir(file):
+            file += "/"
         liste_fichiers.append(file)
-    print(liste_fichiers)
+    liste_fichiers.so
 
 
 def Print(fenetre ,path, k):
-    print("entré")
     GetListeFichiers(path)
-    height = DEBUT
-    print("début for")
+    if(path == "."):
+        path = "RACINE"
+    cur = putain.render(path, 1, (0, 255, 0))
+    fenetre.blit(cur, (2, DEBUT))
+    height = DEBUT + 30
     for i in liste_fichiers:
         if height >= 320 & k > 10:
             break
@@ -42,8 +47,6 @@ def Print(fenetre ,path, k):
         fenetre.blit(label, (10, height))
         k += 1
         height += 20
-        print(k)
-    print("fin for")
     return k
 
 
