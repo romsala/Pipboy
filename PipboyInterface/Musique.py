@@ -38,68 +38,41 @@ def RandomisationMusique():
     liste_musique = []
     for file in os.listdir("Musiques/"):
         if file.endswith(".mp3"):
-            liste_musique.append(file)
-    i = len(liste_musique)-1
-    if i > 0:
-        premiere = random.randint(0, i)
-        pygame.mixer.music.load("Musiques/"+liste_musique[premiere])
-        pygame.mixer.music.play()
-        del liste_musique[premiere]
-        i -= 1
-        for j in range(0, i+1):
-            next = random.randint(0, i)
-            pygame.mixer.music.queue("Musiques/"+liste_musique[next])
-            del liste_musique[next]
-            i -= 1
-    else:
+            liste_musique.append("Musiques/"+file)
+    if not len(liste_musique)==0:
+        random.shuffle(liste_musique)
         pygame.mixer.music.load(liste_musique[0])
+        liste_musique.pop(0)
+        [pygame.mixer.music.queue(m) for m in liste_musique]
         pygame.mixer.music.play()
+    else:
+        # throws a MOTHERFUCKING MASSIVE ERROR MESSAGE
+        raise Exception('WALLAH CA VA PAS IL Y A PAS DE MUSIQUE') # !!!!!!!!
 
 def RandomisationPlaylist(nom_playlist):
     playlist_randomisee = []
-    if VerifierExistencePlaylist(nom_playlist) == 1:
+    if VerifierExistencePlaylist(nom_playlist):
         ArreterMusique()
         pygame.mixer.init()
         chemin_playlist = "Musiques/Playlist/"+nom_playlist+".txt"
-        playlist = open(chemin_playlist, "r").read()
-        liste_musique = playlist.split('\n')
-        if liste_musique[-1] == '':#si le 1er element en partant de la fin est ''
-            liste_musique.remove('')
-        i = len(liste_musique)-1
-        if i > 0:
-            premiere = random.randint(0, i)
-            pygame.mixer.music.load("Musiques/"+liste_musique[premiere])
-            pygame.mixer.music.play()
-            playlist_randomisee.append(liste_musique[premiere])
-            del liste_musique[premiere]
-            i -= 1
-            for j in range(0, i+1):
-                next = random.randint(0, i)
-                pygame.mixer.music.queue("Musiques/"+liste_musique[next])
-                playlist_randomisee.append(liste_musique[next])
-                del liste_musique[next]
-                i -= 1
-            print(playlist_randomisee)
-        else:
-            pygame.mixer.music.load("Musiques/"+liste_musique[0])
-            pygame.mixer.music.play()
-            playlist_randomisee.append(liste_musique[0])
-            print(playlist_randomisee)
-    else:
-        print("Playlist n'existe pas")
+        liste_musique = []
 
+        # TODO: ne gère pas l'éventualité dans laquelle le fichier n'existe pas dans le repertoire
+        with open(chemin_playlist,'r') as fichier_playlist:
+            [liste_musique.append("Musiques/"+line) for line in fichier_playlist]
+
+        random.shuffle(liste_musique)
+        pygame.mixer.music.load(liste_musique[0])
+        liste_musique.pop(0)
+        [pygame.mixer.music.queue(m) for m in liste_musique]
+    else:
+        raise Exception("La playlist existe pas ! Dis wallah t'as voulu me prendre pour un batard !")
 
 def VerifierExistencePlaylist(nom):
-    file_exist = 0
-    string = nom + ".txt"
-    for file in os.listdir("Musiques/Playlist/"):
-        if file == string:
-            file_exist = 1
-    return file_exist
-
+    return nom+'.txt' in os.listdir('Musiques/Playlist/')
 
 def ChargerPlaylist(nom_playlist):
-    if VerifierExistencePlaylist(nom_playlist) == 1:
+    if VerifierExistencePlaylist(nom_playlist):
         chemin_playlist = "Musiques/Playlist/"+nom_playlist+".txt"
         playlist = open(chemin_playlist, "r").read()
         liste_plalist = playlist.split('\n')
@@ -111,16 +84,16 @@ def ChargerPlaylist(nom_playlist):
 
 
 def CreerPlaylist(nom):
-    if VerifierExistencePlaylist(nom) == 0:
+    if not VerifierExistencePlaylist(nom):
         playlist = "Musiques/Playlist/"+nom+".txt"
         open(playlist, 'w')
         print("Playlist crée")
     else:
-        print("Playlist existe deja lel")
+        print("Playlist existe deja lel")#aimdéhère
 
 
 def SupprimerPlaylist(nom):
-    if VerifierExistencePlaylist(nom) == 1:
+    if VerifierExistencePlaylist(nom):
         playlist = "Musiques/Playlist/"+nom+".txt"
         os.remove(playlist)
         print("Playlist supprimée")
@@ -129,35 +102,20 @@ def SupprimerPlaylist(nom):
 
 
 def AjouterElementPlaylist(nom_playlist, musique):
-    if VerifierExistencePlaylist(nom_playlist) == 1:
-        playlist = open("Musiques/Playlist/"+nom_playlist+".txt", "r+")
-        playlist.read()  # Lis le document afin de placer le curseur a la fin, et donc de write a partir de la fin
-        playlist.write(musique+'\n')
-        playlist.close()
+    if VerifierExistencePlaylist(nom_playlist):
+        with open('Musiques/Playlist/'+nom_playlist+".txt", "a") as fichier_playlist:
+            fichier_playlist.write(musique+"\n")
     else:
         print("Playlist n'existe pas")
 
 
-def SupprimerElementPlaylist(nom_playlist, musique):  # Supprime le dernier element portant ce nom dans la playlist
-    if VerifierExistencePlaylist(nom_playlist) == 1:
-        index = -1
+def SupprimerElementPlaylist(nom_playlist, musique):  # Supprime maintenant TOUT les éléments portant ce nom dans la playlist
+    if VerifierExistencePlaylist(nom_playlist):
         chemin_playlist = "Musiques/Playlist/"+nom_playlist+".txt"
-        playlist = open(chemin_playlist, "r").read()
-        liste_plalist = playlist.split('\n')
-        liste_plalist.remove('')
-        for position, piste in enumerate(liste_plalist):
-            if musique in piste:
-                index = position
-        if index >= 0:
-            del liste_plalist[index]
-            new_playlist = open(chemin_playlist, "w")
-            nouveau_contenu = ""
-            for piste in liste_plalist:
-                nouveau_contenu = nouveau_contenu+piste+'\n'
-            new_playlist.write(nouveau_contenu)
-            print("Musique supprimée")
-            print(liste_plalist)
-        else:
-            print("Musique introuvable")
+        buffer = []
+        with open(chemin_playlist,'r') as fichier_playlist_original:
+            [buffer.append(line) for line in fichier_playlist_original if musique.lower()!=line.lower()]
+        with open(chemin_playlist,'w') as fichier_playlist_reecrit:
+            [fichier_playlist_reecrit.write(line+"\n") for line in buffer]
     else:
         print("Playlist n'existe pas")
