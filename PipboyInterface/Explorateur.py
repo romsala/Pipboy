@@ -8,3 +8,6 @@ def InitExplorateur(fenetre):
     top = pygame.image.load("Interface/Explorateur/Explorateur-top.png")
     fenetre.blit(top, (0, 0))
     pygame.display.flip()
+
+def ListLabel(listfil):
+    police = pygame.font.SysFont("monospace", 10)
