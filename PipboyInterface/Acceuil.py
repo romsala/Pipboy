@@ -4,7 +4,7 @@ import time
 
 pygame.init()
 
-police = pygame.font.SysFont("monospace", 60)
+police = pygame.font.SysFont("monospace", 70)
 
 def InitAcceuil(fenetre):
     top = pygame.image.load("Interface/Acceuil/Acceuil-top.png")
@@ -15,7 +15,8 @@ def InitAcceuil(fenetre):
 
 def AfficheHeure(fenetre):
     heure = time.strftime("%H:%M")
+    police.set_bold(True)
     label_heure = police.render(heure, 1, (0,255,0))
     fenetre.fill((0, 0, 0))
-    fenetre.blit(label_heure, (220, 100))
+    fenetre.blit(label_heure, (205, 120))
     InitAcceuil(fenetre)
