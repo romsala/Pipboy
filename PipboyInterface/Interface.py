@@ -1,6 +1,6 @@
 import pygame
 from pygame.locals import*
-import Acceuil
+import Accueil
 import Explorateur
 import Musique
 import Divers
@@ -12,18 +12,18 @@ fenetre = pygame.display.set_mode((480, 320))
 
 rect_explo = pygame.Rect(13, 6, 125, 27)
 rect_music = pygame.Rect(126, 6, 210, 27)
-rect_acceuil = pygame.Rect(211, 6, 290, 27)
+rect_accueil = pygame.Rect(211, 6, 290, 27)
 rect_divers = pygame.Rect(291, 6, 361, 27)
 rect_options = pygame.Rect(362, 6, 448, 27)
 
 screen = 3
 
-Acceuil.InitAcceuil(fenetre)
+Accueil.InitAcceuil(fenetre)
 
 continuer = 1
 while continuer:
     if screen == 3:
-        Acceuil.AfficheHeure(fenetre)
+        Accueil.AfficheHeure(fenetre)
 
     for event in pygame.event.get():
         if event.type == MOUSEBUTTONDOWN and event.button == 1:
@@ -34,8 +34,8 @@ while continuer:
             if rect_music.collidepoint(pos) and screen != 2:
                 Musique.InitMusique(fenetre)
                 screen = 2
-            if rect_acceuil.collidepoint(pos) and screen != 3:
-                Acceuil.InitAcceuil(fenetre)
+            if rect_accueil.collidepoint(pos) and screen != 3:
+                Accueil.InitAcceuil(fenetre)
                 screen = 3
             if rect_divers.collidepoint(pos) and screen != 4:
                 Divers.InitDivers(fenetre)
