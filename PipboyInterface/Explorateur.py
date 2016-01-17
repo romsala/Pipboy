@@ -4,7 +4,7 @@ import os
 
 pygame.init()
 
-police = pygame.font.SysFont("monospace", 10)
+police = pygame.font.SysFont("monospace", 20)
 liste_fichiers=[]
 MAX = 10
 DEBUT = 50
@@ -24,6 +24,8 @@ def GetListeFichiers(path):
     global liste_fichiers
     liste_fichiers = []
     for file in os.listdir(path):
+        if file.endswith("/", 0, len(file)):
+            file.__add__("/")
         liste_fichiers.append(file)
     print(liste_fichiers)
 
