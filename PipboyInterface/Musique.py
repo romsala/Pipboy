@@ -114,7 +114,10 @@ def SupprimerElementPlaylist(nom_playlist, musique):  # Supprime maintenant TOUT
         chemin_playlist = "Musiques/Playlist/"+nom_playlist+".txt"
         buffer = []
         with open(chemin_playlist,'r') as fichier_playlist_original:
-            [buffer.append(line) for line in fichier_playlist_original if musique.lower()!=line.lower()]
+            [buffer.append(line) for line in fichier_playlist_original]
+        buffer.reverse()
+        buffer.remove(musique)
+        buffer.reverse()
         with open(chemin_playlist,'w') as fichier_playlist_reecrit:
             [fichier_playlist_reecrit.write(line+"\n") for line in buffer]
     else:
