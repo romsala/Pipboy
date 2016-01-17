@@ -31,6 +31,7 @@ while continuer:
             if rect_explo.collidepoint(pos) and screen != 1:
                 Explorateur.InitExplorateur(fenetre)
                 screen = 1
+                Explorateur.GetListeFichiers("D:/Projets/Pipboy/Pipboy/PipboyInterface/")
             if rect_music.collidepoint(pos) and screen != 2:
                 Musique.InitMusique(fenetre)
                 screen = 2
