@@ -32,7 +32,7 @@ while continuer:
                 Explorateur.InitExplorateur(fenetre)
                 screen = 1
             if rect_music.collidepoint(pos) and screen != 2:
-                Musique.InitMusique(fenetre)
+                Musique.InitMusique(fenetre, 1)
                 screen = 2
             if rect_accueil.collidepoint(pos) and screen != 3:
                 Accueil.InitAcceuil(fenetre)

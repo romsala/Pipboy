@@ -5,10 +5,22 @@ import random
 
 pygame.init()
 
-def InitMusique(fenetre):
+police = pygame.font.SysFont("monospace", 10)
+police_2 = pygame.font.SysFont("monospace", 30)
+
+
+def InitMusique(fenetre, page):
     fenetre.fill((0, 0, 0))
     top = pygame.image.load("Interface/Musique/Musique-top.png")
+    fleche_droite = pygame.image.load("Interface/Musique/Fleche_droite.png")
+    fleche_gauche = pygame.image.load("Interface/Musique/Fleche_gauche.png")
     fenetre.blit(top, (0, 0))
+    fenetre.blit(fleche_droite, (190, 290))
+    fenetre.blit(fleche_gauche, (10, 290))
+    display_pages = police_2.render(str(page) + " / " + str(int(GetNombreMp3()/30+1)), 1, (0, 255, 0))
+    fenetre.blit(display_pages, (70, 285))
+    PrintMusique(fenetre, page)
+    pygame.draw.line(fenetre, (0, 255, 0), (110, 90), (110, 270), 1)
     pygame.display.flip()
 
 
@@ -122,3 +134,39 @@ def SupprimerElementPlaylist(nom_playlist, musique):
             [fichier_playlist_reecrit.write(line+"\n") for line in buffer]
     else:
         print("Playlist n'existe pas")
+
+def GetMp3Files():
+    liste_fichiers = []
+    for file in os.listdir("Musiques/"):
+        if file.endswith(".mp3"):
+            liste_fichiers.append(file)
+    return liste_fichiers
+
+def GetNombreMp3():
+    int = 0
+    for file in os.listdir("Musiques/"):
+        if file.endswith(".mp3"):
+            int += 1
+    return int
+
+def PrintMusique(fenetre, page):
+    liste_musique = GetMp3Files()
+    print(len(liste_musique))
+    titre = police_2.render("Musique", 1, (0, 255, 0))
+    fenetre.blit(titre, (2, 50))
+    height = 90
+    page -= 1
+    width = 10
+    for n in range(0, 30):#affiche un max de 30 elements
+        if height >= 320 and n > 30 or 30*page+n+1 > len(liste_musique):
+             break
+        musique = liste_musique[30*page+n]
+        if len(musique) > 15: #limite la longueur du nom a 15 char
+            musique = musique[:15] #prend les 15 premiers char
+        if n == 16:
+            width = 120
+            height = 90
+        label = police.render(musique, 1, (0, 255, 0))
+        fenetre.blit(label, (width, height))
+        n += 1
+        height += 12
