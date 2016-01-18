@@ -157,12 +157,12 @@ def PrintMusique(fenetre, page):
     height = 90
     page -= 1
     width = 10
-    for n in range(0, 30):#affiche un max de 30 elements
+    for n in range(0, 30):  # affiche un max de 30 elements
         if height >= 320 and n > 30 or 30*page+n+1 > len(liste_musique):
              break
         musique = liste_musique[30*page+n]
-        if len(musique) > 15: #limite la longueur du nom a 15 char
-            musique = musique[:15] #prend les 15 premiers char
+        if len(musique) > 15:  # limite la longueur du nom a 15 char
+            musique = musique[:15]  # prend les 15 premiers char
         if n == 16:
             width = 120
             height = 90
