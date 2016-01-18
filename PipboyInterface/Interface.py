@@ -29,17 +29,17 @@ while continuer:
         if event.type == MOUSEBUTTONDOWN and event.button == 1:
             pos = pygame.mouse.get_pos()
             if rect_explo.collidepoint(pos) and screen != 1:
-                Explorateur.InitExplorateur(fenetre)
                 screen = 1
+                Explorateur.InitExplorateur(fenetre)
             if rect_music.collidepoint(pos) and screen != 2:
-                Musique.InitMusique(fenetre, 1)
                 screen = 2
+                Musique.InitMusique(fenetre, 1)
             if rect_accueil.collidepoint(pos) and screen != 3:
-                Accueil.InitAcceuil(fenetre)
                 screen = 3
+                Accueil.InitAcceuil(fenetre)
             if rect_divers.collidepoint(pos) and screen != 4:
-                Divers.InitDivers(fenetre)
                 screen = 4
+                Divers.InitDivers(fenetre)
             if rect_options.collidepoint(pos) and screen != 5:
-                Options.InitOptions(fenetre)
                 screen = 5
+                Options.InitOptions(fenetre)
