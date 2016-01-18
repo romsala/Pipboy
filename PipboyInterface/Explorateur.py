@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import*
 import os
+# from Interface import screen
 
 pygame.init()
 
@@ -17,12 +18,14 @@ def InitExplorateur(fenetre):
     top = pygame.image.load("Interface/Explorateur/Explorateur-top.png")
     fenetre.blit(top, (0, 0))
     path = os.path.curdir
-    # label_heure = police.render(heure, 1, (0,255,0))
-    indx = Print(fenetre, path, 0) #le 0 = l'index du vect des elm dans un folder
+    #while screen == 1:
+    page = 0
+    Print(fenetre, path, page)
     pygame.display.flip()
 
 
-def Print(fenetre ,path, k):
+
+def Print(fenetre, path, page):
     # TODO faire fonction qui clean l'écran des rect et des noms déjà écrit
     liste_fichiers = []
     liste_fichiers = GetListeFichiers(path)
@@ -30,23 +33,23 @@ def Print(fenetre ,path, k):
     cur = putain.render(path, 1, (0, 255, 0))
     fenetre.blit(cur, (2, DEBUT))
     height = DEBUT + 30
-    for i in liste_fichiers:
-        if height >= 320 & k > 10:
+    for i in range(0, 10):  # affiche max de 10 elm
+        if i > len(liste_fichiers) and height >= 320 and i > 10:
             break
-        if IsFolder(liste_fichiers[k]):
-            CreateRect(height, 10, len(liste_fichiers[k]))
-        label = police.render(liste_fichiers[k], 1, (0, 255, 0))
+        name = ""
+        name = CutName(liste_fichiers[10*page+i])
+        if IsFolder(liste_fichiers[10*page + i]):
+            CreateRect(height, 10, len(name))
+        label = police.render(name, 1, (0, 255, 0))
         fenetre.blit(label, (10, height))
-        k += 1
         height += 20
-    return k
 
+
+# Fonctions secondaires
 
 def CreateRect(x, y, width):
     rect = pygame.Rect(x, y, width*15, 10)
-    print("YOUHOU")
 
-# Fonctions secondaires
 
 def IsFolder(test):
     return os.path.isdir(test)
@@ -66,4 +69,7 @@ def CheckRacine(path):
     return path
 
 
-
+def CutName(name):
+    if len(name) > 25:
+        return name[:25]
+    return name
