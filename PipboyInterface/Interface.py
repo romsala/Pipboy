@@ -5,6 +5,7 @@ import Explorateur
 import Musique
 import Divers
 import Options
+import Global
 
 pygame.init()
 
@@ -16,30 +17,31 @@ rect_accueil = pygame.Rect(211, 6, 79, 21)
 rect_divers = pygame.Rect(291, 6, 70, 21)
 rect_options = pygame.Rect(362, 6, 86, 21)
 
-screen = 3
+Global.SetScreen(3)
 
 Accueil.InitAcceuil(fenetre)
 
 continuer = 1
 while continuer:
-    if screen == 3:
+    print(Global.GetScreen())
+    if Global.GetScreen() == 3:
         Accueil.AfficheHeure(fenetre)
 
     for event in pygame.event.get():
         if event.type == MOUSEBUTTONDOWN and event.button == 1:
             pos = pygame.mouse.get_pos()
-            if rect_explo.collidepoint(pos) and screen != 1:
-                screen = 1
+            if rect_explo.collidepoint(pos) and Global.GetScreen() != 1:
+                Global.screen = 1
                 Explorateur.InitExplorateur(fenetre)
-            if rect_music.collidepoint(pos) and screen != 2:
-                screen = 2
+            if rect_music.collidepoint(pos) and Global.GetScreen() != 2:
+                Global.screen = 2
                 Musique.InitMusique(fenetre, 1)
-            if rect_accueil.collidepoint(pos) and screen != 3:
-                screen = 3
+            if rect_accueil.collidepoint(pos) and Global.GetScreen() != 3:
+                Global.screen = 3
                 Accueil.InitAcceuil(fenetre)
-            if rect_divers.collidepoint(pos) and screen != 4:
-                screen = 4
+            if rect_divers.collidepoint(pos) and Global.GetScreen() != 4:
+                Global.screen = 4
                 Divers.InitDivers(fenetre)
-            if rect_options.collidepoint(pos) and screen != 5:
-                screen = 5
+            if rect_options.collidepoint(pos) and Global.GetScreen() != 5:
+                Global.screen = 5
                 Options.InitOptions(fenetre)
