@@ -46,3 +46,5 @@ Temporary Items
 PipboyInterface/__pycache__/Explorateur.cpython-32.pyc
 
 .idea/
+
+__pycache__/

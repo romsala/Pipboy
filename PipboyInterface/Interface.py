@@ -23,7 +23,7 @@ Accueil.InitAcceuil(fenetre)
 
 continuer = 1
 while continuer:
-    print(Global.GetScreen())
+    #print(Global.GetScreen())
     if Global.GetScreen() == 3:
         Accueil.AfficheHeure(fenetre)
 
@@ -45,3 +45,5 @@ while continuer:
             if rect_options.collidepoint(pos) and Global.GetScreen() != 5:
                 Global.screen = 5
                 Options.InitOptions(fenetre)
+            if Global.GetScreen() == 2:
+                Musique.ProcessClick(pos)
