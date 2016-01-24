@@ -8,6 +8,9 @@ pygame.init()
 police = pygame.font.SysFont("monospace", 10)
 police_2 = pygame.font.SysFont("monospace", 30)
 page_actuelle = 1
+liste_boutons_mp3 = []
+liste_mp3 =[]
+liste_musique_jouee = []
 
 
 def InitMusique(fenetre, page):
@@ -20,11 +23,11 @@ def InitMusique(fenetre, page):
     fenetre.blit(fleche_gauche, (10, 290))
     display_pages = police_2.render(str(page) + " / " + str(int(GetNombreMp3()/30+1)), 1, (0, 255, 0))
     fenetre.blit(display_pages, (70, 285))
-    PrintMusique(fenetre, page)
     pygame.draw.line(fenetre, (0, 255, 0), (110, 90), (110, 270), 1)
-    pygame.display.flip()
+    GetMp3Files()
     GenerationBoutonsMp3()
-
+    PrintMusique(fenetre, page)
+    pygame.display.flip()
 
 def JouerMusique(mp3):
     ArreterMusique()
@@ -139,11 +142,11 @@ def SupprimerElementPlaylist(nom_playlist, musique):
         print("Playlist n'existe pas")
 
 def GetMp3Files():
-    liste_fichiers = []
+    global  liste_mp3
+    liste_mp3 = []
     for file in os.listdir("Musiques/"):
         if file.endswith(".mp3"):
-            liste_fichiers.append(file)
-    return liste_fichiers
+            liste_mp3.append(file)
 
 def GetNombreMp3():
     int = 0
@@ -155,17 +158,15 @@ def GetNombreMp3():
 def PrintMusique(fenetre, page):
     global page_actuelle
     page_actuelle = page
-    liste_musique = GetMp3Files()
-    print(len(liste_musique))
     titre = police_2.render("Musique", 1, (0, 255, 0))
     fenetre.blit(titre, (2, 50))
     height = 90
     page -= 1
     width = 10
     for n in range(0, 30):  # affiche un max de 30 elements
-        if height >= 320 and n > 30 or 30*page+n+1 > len(liste_musique):
+        if height >= 320 and n > 30 or 30*page+n+1 > len(liste_mp3):
             break
-        musique = liste_musique[30*page+n]
+        musique = liste_mp3[30*page+n]
         if len(musique) > 15:  # limite la longueur du nom a 15 char
             musique = musique[:15]  # prend les 15 premiers char
         if n == 15:
@@ -177,7 +178,7 @@ def PrintMusique(fenetre, page):
         height += 12
 
 def GenerationBoutonsMp3():
-    liste_boutons = []
+    global liste_boutons_mp3
     height = 90
     width = 10
     for n in range(0, 30):
@@ -186,13 +187,11 @@ def GenerationBoutonsMp3():
         if n == 15:
             width = 120
             height = 90
-        liste_boutons.append(pygame.Rect(width, height, 100, 10))
+        liste_boutons_mp3.append(pygame.Rect(width, height, 100, 10))
         n += 1
         height += 12
-    return liste_boutons
 
 def GetCollisionBouton(pos):
-    liste_boutons_mp3 = GenerationBoutonsMp3()
     bouton = None
     if pygame.Rect(10, 90, 100, 180).collidepoint(pos):
         for n in range(0, 15):
@@ -206,16 +205,16 @@ def GetCollisionBouton(pos):
                 bouton = n
                 break
             n +=1
-    print(bouton)
+    #print(bouton)
     return bouton
 
 def ProcessClick(pos):
     index = GetCollisionBouton(pos)
-    print(pos)
+    #print(pos)
     if pygame.Rect(10, 90, 210, 180).collidepoint(pos) and index is not None:
-        liste_mp3 = GetMp3Files()
         index = 30*(page_actuelle-1)+index
-        if index <= len(liste_mp3):
+        if index < len(liste_mp3):
             JouerMusique("Musiques/"+liste_mp3[index])
+            print(pygame.mixer.Channel.get_sound())
 
 # TODO: Les fichiers .mp3 comportants caractères spéciaux(sauf '-' et '_') ou un '.' autre que dans son extension poseront probleme lors de leur décompression par le module de musique pygame, donc prevoir une fonction pour "Clean" le dossier musique
