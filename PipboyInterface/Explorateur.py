@@ -79,7 +79,7 @@ def ProcessClick(fenetre, pos):
         if index < len(listElm) and IsFolder(listElm[index]):
             CUR_PATH = listElm[index]
             CUR_PAGE = 0
-    Print(fenetre, CUR_PATH, CUR_PAGE)
+            Print(fenetre, CUR_PATH, CUR_PAGE)
 
 
 def ChgmtPage(direction):
