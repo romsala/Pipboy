@@ -26,7 +26,6 @@ while continuer:
     #print(Global.GetScreen())
     if Global.GetScreen() == 3:
         Accueil.AfficheHeure(fenetre)
-
     for event in pygame.event.get():
         if event.type == MOUSEBUTTONDOWN and event.button == 1:
             pos = pygame.mouse.get_pos()
@@ -47,3 +46,5 @@ while continuer:
                 Options.InitOptions(fenetre)
             if Global.GetScreen() == 2:
                 Musique.ProcessClick(pos)
+            if Global.GetScreen() == 1:
+                Explorateur.ProcessClick(fenetre, pos)
