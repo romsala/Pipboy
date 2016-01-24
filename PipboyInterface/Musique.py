@@ -11,7 +11,7 @@ page_actuelle = 1
 liste_boutons_mp3 = []
 liste_mp3 =[]
 liste_musique_jouee = []
-
+musique_actuelle = None
 
 def InitMusique(fenetre, page):
     fenetre.fill((0, 0, 0))
@@ -30,9 +30,13 @@ def InitMusique(fenetre, page):
     pygame.display.flip()
 
 def JouerMusique(mp3):
+    global liste_musique_jouee
+    global musique_actuelle
+    liste_musique_jouee = liste_mp3
+    musique_actuelle = mp3
     ArreterMusique()
     pygame.mixer.init()
-    pygame.mixer.music.load(mp3)
+    pygame.mixer.music.load("Musiques/"+mp3)
     pygame.mixer.music.play()
 
 
@@ -51,15 +55,46 @@ def ArreterMusique():
     if pygame.mixer.music.get_pos() != -1:
         pygame.mixer.quit()
 
+def ActualiserQueueNext():
+    global musique_actuelle
+    index_musique = None
+    for index, mp3 in liste_musique_jouee:
+        if mp3 in musique_actuelle:
+            index_musique = index
+    if index_musique is not None and index_musique < len(liste_musique_jouee)-1:
+        if liste_musique_jouee[index_musique+1] is not None:
+            musique_actuelle = liste_musique_jouee[index_musique+1]
+    else:
+        if index_musique is not None and index_musique == len(liste_musique_jouee)-1:
+            musique_actuelle = liste_musique_jouee[0]
+    print(musique_actuelle)
+
+def ActualiserQueuePrevious():
+    global musique_actuelle
+    index_musique = None
+    for index, mp3 in liste_musique_jouee:
+        if mp3 in musique_actuelle:
+            index_musique = index
+    if index_musique is not None:
+        if index_musique is not 0:
+            musique_actuelle = liste_musique_jouee[index_musique-1]
+        else:
+            musique_actuelle = liste_musique_jouee[0]
+    print(musique_actuelle)
+
+
+
 def RandomisationMusique():
+    global  liste_musique_jouee
     pygame.mixer.init()
     liste_musique = []
     for file in os.listdir("Musiques/"):
         if file.endswith(".mp3"):
-            liste_musique.append("Musiques/"+file)
+            liste_musique.append(file)
     if not len(liste_musique)==0:
         random.shuffle(liste_musique)
         pygame.mixer.music.load(liste_musique[0])
+        liste_musique_jouee = liste_musique
         liste_musique.pop(0)
         [pygame.mixer.music.queue(m) for m in liste_musique]
         pygame.mixer.music.play()
@@ -68,7 +103,7 @@ def RandomisationMusique():
         raise Exception('WALLAH CA VA PAS IL Y A PAS DE MUSIQUE') # !!!!!!!!
 
 def RandomisationPlaylist(nom_playlist):
-    playlist_randomisee = []
+    global liste_musique_jouee
     if VerifierExistencePlaylist(nom_playlist):
         ArreterMusique()
         pygame.mixer.init()
@@ -76,11 +111,12 @@ def RandomisationPlaylist(nom_playlist):
         liste_musique = []
 
         # TODO: ne gère pas l'éventualité dans laquelle le fichier n'existe pas dans le repertoire
-        with open(chemin_playlist,'r') as fichier_playlist:
-            [liste_musique.append("Musiques/"+line) for line in fichier_playlist]
+        with open(chemin_playlist, 'r') as fichier_playlist:
+            [liste_musique.append(line) for line in fichier_playlist]
 
         random.shuffle(liste_musique)
         pygame.mixer.music.load(liste_musique[0])
+        liste_musique_jouee = liste_musique
         liste_musique.pop(0)
         [pygame.mixer.music.queue(m) for m in liste_musique]
     else:
@@ -214,7 +250,6 @@ def ProcessClick(pos):
     if pygame.Rect(10, 90, 210, 180).collidepoint(pos) and index is not None:
         index = 30*(page_actuelle-1)+index
         if index < len(liste_mp3):
-            JouerMusique("Musiques/"+liste_mp3[index])
-            print(pygame.mixer.Channel.get_sound())
+            JouerMusique(liste_mp3[index])
 
 # TODO: Les fichiers .mp3 comportants caractères spéciaux(sauf '-' et '_') ou un '.' autre que dans son extension poseront probleme lors de leur décompression par le module de musique pygame, donc prevoir une fonction pour "Clean" le dossier musique
