@@ -92,16 +92,22 @@ def NvllePage(fenetre, path, page, direction):
     fenetre.blit()
     return page
 
+""" Les triples guillemets permettent de commenter plusieurs lignes ;) plus pratique que les # nan ?
+def ChgmtDir(fenetre, path):
+    Print(fenetre, path, 0)
+    return 0
+"""
 
-# Peut surement être améliorée
+
+# J'ai essayé de l'améliorer
+# En tout cas ça vous permettra de voir les operations split et join sur les listes
 def DirPrec(fenetre, path):
     if path != ".":
-        i = len(path) - 1
-        while i >= 0:
-            if path[i] == "/" or path == ".":
-                break
-            else:
-                path = path[:i]
+        if path[-1]=='/':
+            path = path[-1]
+        path = '/'.join(path.split('/')[:-1])
+        if path == "":
+            path="/"
     page = 0
     Print(fenetre, path, 0)
     return path
