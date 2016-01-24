@@ -17,9 +17,13 @@ rect_accueil = pygame.Rect(211, 6, 79, 21)
 rect_divers = pygame.Rect(291, 6, 70, 21)
 rect_options = pygame.Rect(362, 6, 86, 21)
 
+FIN_MUSIQUE = pygame.USEREVENT + 1
+
 Global.SetScreen(3)
 
 Accueil.InitAcceuil(fenetre)
+
+pygame.mixer.music.set_endevent(FIN_MUSIQUE)
 
 continuer = 1
 while continuer:
@@ -48,3 +52,9 @@ while continuer:
                 Musique.ProcessClick(pos)
             if Global.GetScreen() == 1:
                 Explorateur.ProcessClick(fenetre, pos)
+
+        if event.type == FIN_MUSIQUE:
+            if not Musique.loop:
+                Musique.MusiqueNext()
+            else:
+                Musique.Replay()
