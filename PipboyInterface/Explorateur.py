@@ -84,11 +84,11 @@ def NvllePage(fenetre, path, page, direction):
     fenetre.blit()
     return page
 
-
-#def ChgmtDir(fenetre, path):
-#    Print(fenetre, path, 0)
-#    return 0
-
+""" Les triples guillemets permettent de commenter plusieurs lignes ;) plus pratique que les # nan ?
+def ChgmtDir(fenetre, path):
+    Print(fenetre, path, 0)
+    return 0
+"""
 
 # Peut surement être améliorée
 def DirPrec(fenetre, path):
