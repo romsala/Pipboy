@@ -12,8 +12,10 @@ liste_boutons_mp3 = []
 liste_mp3 =[]
 liste_musique_jouee = []
 musique_actuelle = None
+loop = False
 
 def InitMusique(fenetre, page):
+    global liste_musique_jouee
     fenetre.fill((0, 0, 0))
     top = pygame.image.load("Interface/Musique/Musique-top.png")
     fleche_droite = pygame.image.load("Interface/Musique/Fleche_droite.png")
@@ -25,6 +27,9 @@ def InitMusique(fenetre, page):
     fenetre.blit(display_pages, (70, 285))
     pygame.draw.line(fenetre, (0, 255, 0), (110, 90), (110, 270), 1)
     GetMp3Files()
+    if liste_musique_jouee == []:# si il n y a aucune liste de musique jouée actuellement, prend les mp3 dans l'ordre alphabetiques(pour eviter d'eventuelles erreurs)
+        liste_musique_jouee = liste_mp3
+        print(liste_musique_jouee)
     GenerationBoutonsMp3()
     PrintMusique(fenetre, page)
     pygame.display.flip()
@@ -32,9 +37,9 @@ def InitMusique(fenetre, page):
 def JouerMusique(mp3):
     global liste_musique_jouee
     global musique_actuelle
-    liste_musique_jouee = liste_mp3
     musique_actuelle = mp3
     ArreterMusique()
+    pygame.mixer.pre_init(44100,-16,2, 1024 * 3)
     pygame.mixer.init()
     pygame.mixer.music.load("Musiques/"+mp3)
     pygame.mixer.music.play()
@@ -54,50 +59,46 @@ def StopperMusique():
 def ArreterMusique():
     if pygame.mixer.music.get_pos() != -1:
         pygame.mixer.quit()
+        print("lel")
 
-def ActualiserQueueNext():
+def MusiqueNext():
     global musique_actuelle
-    index_musique = None
-    for index, mp3 in liste_musique_jouee:
-        if mp3 in musique_actuelle:
-            index_musique = index
+    index_musique = liste_musique_jouee.index(musique_actuelle)
     if index_musique is not None and index_musique < len(liste_musique_jouee)-1:
         if liste_musique_jouee[index_musique+1] is not None:
-            musique_actuelle = liste_musique_jouee[index_musique+1]
+            JouerMusique(liste_musique_jouee[index_musique+1])
     else:
         if index_musique is not None and index_musique == len(liste_musique_jouee)-1:
-            musique_actuelle = liste_musique_jouee[0]
+            JouerMusique(liste_musique_jouee[0])
     print(musique_actuelle)
 
-def ActualiserQueuePrevious():
+def MusiquePrevious():
     global musique_actuelle
-    index_musique = None
-    for index, mp3 in liste_musique_jouee:
-        if mp3 in musique_actuelle:
-            index_musique = index
+    index_musique = liste_musique_jouee.index(musique_actuelle)
     if index_musique is not None:
         if index_musique is not 0:
-            musique_actuelle = liste_musique_jouee[index_musique-1]
+            JouerMusique(liste_musique_jouee[index_musique-1])
         else:
-            musique_actuelle = liste_musique_jouee[0]
+            JouerMusique(liste_musique_jouee[0])
     print(musique_actuelle)
 
-
+def Replay():
+    JouerMusique(liste_musique_jouee.index(musique_actuelle))
 
 def RandomisationMusique():
     global  liste_musique_jouee
-    pygame.mixer.init()
-    liste_musique = []
-    for file in os.listdir("Musiques/"):
+    #pygame.mixer.init()
+    liste_musique_jouee = liste_mp3
+    """for file in os.listdir("Musiques/"):
         if file.endswith(".mp3"):
-            liste_musique.append(file)
-    if not len(liste_musique)==0:
-        random.shuffle(liste_musique)
-        pygame.mixer.music.load(liste_musique[0])
-        liste_musique_jouee = liste_musique
+            liste_musique.append(file)"""
+    if not len(liste_musique_jouee)==0:
+        random.shuffle(liste_musique_jouee)
+        """pygame.mixer.music.load(liste_musique[0])
         liste_musique.pop(0)
         [pygame.mixer.music.queue(m) for m in liste_musique]
-        pygame.mixer.music.play()
+        pygame.mixer.music.play()"""
+        JouerMusique(liste_musique_jouee[0])
     else:
         # throws a MOTHERFUCKING MASSIVE ERROR MESSAGE
         raise Exception('WALLAH CA VA PAS IL Y A PAS DE MUSIQUE') # !!!!!!!!
@@ -105,20 +106,21 @@ def RandomisationMusique():
 def RandomisationPlaylist(nom_playlist):
     global liste_musique_jouee
     if VerifierExistencePlaylist(nom_playlist):
-        ArreterMusique()
-        pygame.mixer.init()
+        #ArreterMusique()
+        #pygame.mixer.init()
         chemin_playlist = "Musiques/Playlist/"+nom_playlist+".txt"
-        liste_musique = []
+        liste_musique_jouee = []
 
         # TODO: ne gère pas l'éventualité dans laquelle le fichier n'existe pas dans le repertoire
         with open(chemin_playlist, 'r') as fichier_playlist:
-            [liste_musique.append(line) for line in fichier_playlist]
+            [liste_musique_jouee.append(line) for line in fichier_playlist]
 
-        random.shuffle(liste_musique)
-        pygame.mixer.music.load(liste_musique[0])
+        random.shuffle(liste_musique_jouee)
+        JouerMusique(liste_musique_jouee[0])
+        """pygame.mixer.music.load(liste_musique[0])
         liste_musique_jouee = liste_musique
         liste_musique.pop(0)
-        [pygame.mixer.music.queue(m) for m in liste_musique]
+        [pygame.mixer.music.queue(m) for m in liste_musique]"""
     else:
         raise Exception("La playlist existe pas ! Dis wallah t'as voulu me prendre pour un batard !")
 
