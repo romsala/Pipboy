@@ -47,4 +47,6 @@ PipboyInterface/__pycache__/Explorateur.cpython-32.pyc
 
 .idea/
 
+*.pyc
+
 __pycache__/
