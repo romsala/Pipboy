@@ -68,13 +68,13 @@ def PrintPage(fenetre, page):
 
 def GenerationBoutons():
     liste_boutons = []
-    height = DEBUT + 29
-    width = 10
+    height = DEBUT + 20
+    width = 0
     for n in range(0, 10):
         if height >= 320:
             break
-        liste_boutons.append(pygame.Rect(width, height, 200, 20))
-        height += 20
+        liste_boutons.append(pygame.Rect(width, height, 200, 25))
+        height += 25
     return liste_boutons
 
 def GetCollisionBouton(pos):
@@ -90,7 +90,6 @@ def ProcessClick(fenetre, pos):
     cur_path = GetCurPath()
     cur_page = GetCurPage()
     index = GetCollisionBouton(pos)
-    print(listElm)
     print("index is ", index)
     print("pos is :", pos)
     # Fleche haut
@@ -102,13 +101,14 @@ def ProcessClick(fenetre, pos):
             cur_page = CheckPage(cur_path, 1)
             SetCurPage(cur_page)
         else:
-            if pygame.Rect(10, DEBUT + 30, 300, 240).collidepoint(pos) and index is not None: # element dans la liste
-                index = 30*GetCurPage() + index
+            if index is not None: # element dans la liste
+                index = 10*GetCurPage() + index
                 if index < len(listElm) and IsFolder(listElm[index]):
-                    cur_path = listElm[index]
-                    cur_page = 0
+                    SetCurPath(listElm[index])
+                    SetCurPage(0)
     Print(fenetre, cur_path, cur_page)
 
+#pygame.Rect(10, DEBUT + 30, 350, 240).collidepoint(pos) and
 
 def CheckPage(path, direction):
     page = GetCurPage()
