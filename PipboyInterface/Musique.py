@@ -183,13 +183,13 @@ def GetMp3Files():
     global  liste_mp3
     liste_mp3 = []
     for file in os.listdir("Musiques/"):
-        if file.endswith(".mp3"):
+        if file.endswith(".ogg"):
             liste_mp3.append(file)
 
 def GetNombreMp3():
     int = 0
     for file in os.listdir("Musiques/"):
-        if file.endswith(".mp3"):
+        if file.endswith(".ogg"):
             int += 1
     return int
 
