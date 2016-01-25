@@ -10,18 +10,3 @@ def GetScreen():
 
 def SetScreen(new):
     _screen = new
-
-
-class Directory:
-    def __init__(self, path, rect):
-        self.next = None
-        self.path = path
-        self.rect = rect
-
-    def Append(self, dir):
-        if self.next is None:
-            self.next = Directory(dir.path, dir.rect)
-            self.next.path = dir.path
-            self.next.rect = dir.rect
-        else:
-            self.next.Append(dir)
