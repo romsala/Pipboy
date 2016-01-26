@@ -68,13 +68,13 @@ def PrintPage(fenetre, page):
 
 def GenerationBoutons():
     liste_boutons = []
-    height = DEBUT + 20
+    height = DEBUT + 30
     width = 0
     for n in range(0, 10):
         if height >= 320:
             break
-        liste_boutons.append(pygame.Rect(width, height, 200, 25))
-        height += 25
+        liste_boutons.append(pygame.Rect(0, height, 200, 20))
+        height += 20
     return liste_boutons
 
 def GetCollisionBouton(pos):
@@ -92,23 +92,24 @@ def ProcessClick(fenetre, pos):
     index = GetCollisionBouton(pos)
     print("index is ", index)
     print("pos is :", pos)
-    # Fleche haut
-    if pygame.Rect(450, 101,25,25).collidepoint(pos):
-        cur_page = CheckPage(cur_path, -1)
-        SetCurPage(cur_page)
+    if pygame.Rect(DEBUT, 0, 300, 25).collidepoint(pos):  # dossier precedent
+        DirPrec(GetCurPath())
     else:
-        if pygame.Rect(450, 203, 25, 25).collidepoint(pos):  # Fleche bas
-            cur_page = CheckPage(cur_path, 1)
+        if pygame.Rect(450, 101, 25, 25).collidepoint(pos): #fleche haut
+            cur_page = CheckPage(cur_path, -1)
             SetCurPage(cur_page)
         else:
-            if index is not None: # element dans la liste
-                index = 10*GetCurPage() + index
-                if index < len(listElm) and IsFolder(listElm[index]):
-                    SetCurPath(listElm[index])
-                    SetCurPage(0)
+            if pygame.Rect(450, 203, 25, 25).collidepoint(pos):  # Fleche bas
+                cur_page = CheckPage(cur_path, 1)
+                SetCurPage(cur_page)
+            else:
+                if pygame.Rect(10, DEBUT + 30, 350, 240).collidepoint(pos) and index is not None: # element dans la liste
+                    index = 10*GetCurPage() + index
+                    if index < len(listElm) and IsFolder(listElm[index]):
+                        SetCurPath(listElm[index])
+                        SetCurPage(0)
     Print(fenetre, cur_path, cur_page)
 
-#pygame.Rect(10, DEBUT + 30, 350, 240).collidepoint(pos) and
 
 def CheckPage(path, direction):
     page = GetCurPage()
@@ -123,6 +124,16 @@ def NvllePage(fenetre, path, page, direction):
         page += direction
     return page
 
+
+def DirPrec(path):
+    if path != ".":
+        if path[-1]=='/':
+            path = path[-1]
+        path = '/'.join(path.split('/')[:-1])
+        if path == "":
+            path="/"
+    page = 0
+    return path
 
 # Fonctions secondaires
 
@@ -163,6 +174,8 @@ def GetListeFichiers(path):
 def CheckRacine(path):
     if path == '.':
         return "RACINE"
+    if path == "RACINE":
+        return '.'
     return path
 
 
