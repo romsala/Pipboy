@@ -92,8 +92,9 @@ def ProcessClick(fenetre, pos):
     index = GetCollisionBouton(pos)
     print("index is ", index)
     print("pos is :", pos)
-    if pygame.Rect(DEBUT, 0, 300, 25).collidepoint(pos):  # dossier precedent
-        DirPrec(GetCurPath())
+    if pygame.Rect(0, DEBUT, 300, 25).collidepoint(pos):  # dossier precedent
+        SetCurPath(DirPrec2(GetCurPath()))
+        SetCurPage(0)
     else:
         if pygame.Rect(450, 101, 25, 25).collidepoint(pos): #fleche haut
             cur_page = CheckPage(cur_path, -1)
@@ -108,8 +109,8 @@ def ProcessClick(fenetre, pos):
                     if index < len(listElm) and IsFolder(listElm[index]):
                         SetCurPath(listElm[index])
                         SetCurPage(0)
-    Print(fenetre, cur_path, cur_page)
-
+    Print(fenetre, GetCurPath(), GetCurPage())
+"""GetCurPath() + "/" +"""
 
 def CheckPage(path, direction):
     page = GetCurPage()
@@ -125,14 +126,26 @@ def NvllePage(fenetre, path, page, direction):
     return page
 
 
+def DirPrec2(path):
+    print(path)
+    if path != ".":
+        if path[-1] == "/":
+            path = path[:-1]
+        while path != "" and path[-1] != "/":
+            path = path[:-1]
+        if path == "":
+            path = "."
+        print("path parent" + path)
+    return path
+
+
 def DirPrec(path):
     if path != ".":
         if path[-1]=='/':
             path = path[-1]
-        path = '/'.join(path.split('/')[:-1])
+        path = '.'.join(path.split('/')[:-1])
         if path == "":
             path="/"
-    page = 0
     return path
 
 # Fonctions secondaires
