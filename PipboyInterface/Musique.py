@@ -2,6 +2,7 @@ import pygame
 from pygame.locals import*
 import os
 import random
+import Global
 
 pygame.init()
 
@@ -17,15 +18,10 @@ loop = False
 def InitMusique(fenetre, page):
     global liste_musique_jouee
     fenetre.fill((0, 0, 0))
-    top = pygame.image.load("Interface/Musique/Musique-top.png")
-    fleche_droite = pygame.image.load("Interface/Musique/Fleche_droite.png")
-    fleche_gauche = pygame.image.load("Interface/Musique/Fleche_gauche.png")
-    fenetre.blit(top, (0, 0))
-    fenetre.blit(fleche_droite, (190, 290))
-    fenetre.blit(fleche_gauche, (10, 290))
-    display_pages = police_2.render(str(page) + " / " + str(int(GetNombreMp3()/30+1)), 1, (0, 255, 0))
+    InitHelp(fenetre)
+    display_pages = police_2.render(str(page) + " / " + str(int(GetNombreMp3()/30+1)), 1, Global.COLOR)
     fenetre.blit(display_pages, (70, 285))
-    pygame.draw.line(fenetre, (0, 255, 0), (110, 90), (110, 270), 1)
+    pygame.draw.line(fenetre, Global.COLOR, (110, 90), (110, 270), 1)
     GetMp3Files()
     if liste_musique_jouee == []:# si il n y a aucune liste de musique jouée actuellement, prend les mp3 dans l'ordre alphabetiques(pour eviter d'eventuelles erreurs)
         liste_musique_jouee = liste_mp3
@@ -33,6 +29,25 @@ def InitMusique(fenetre, page):
     GenerationBoutonsMp3()
     PrintMusique(fenetre, page)
     pygame.display.flip()
+
+
+def InitHelp(fenetre):
+    top = pygame.image.load("Interface/Musique/Musique-top-green.png")
+    fleche_droite = pygame.image.load("Interface/Musique/Fleche_droite-green.png")
+    fleche_gauche = pygame.image.load("Interface/Musique/Fleche_gauche-green.png")
+    if Global.COLOR.r == 255:
+        top = pygame.image.load("Interface/Musique/Musique-top-red.png")
+        fleche_droite = pygame.image.load("Interface/Musique/Fleche_droite-red.png")
+        fleche_gauche = pygame.image.load("Interface/Musique/Fleche_gauche-red.png")
+    if Global.COLOR.b == 255:
+        top = pygame.image.load("Interface/Musique/Musique-top-blue.png")
+        fleche_droite = pygame.image.load("Interface/Musique/Fleche_droite-blue.png")
+        fleche_gauche = pygame.image.load("Interface/Musique/Fleche_gauche-blue.png")
+    fenetre.blit(top, (0, 0))
+    fenetre.blit(fleche_droite, (190, 290))
+    fenetre.blit(fleche_gauche, (10, 290))
+    pygame.display.flip()
+
 
 def JouerMusique(mp3):
     global liste_musique_jouee
@@ -196,7 +211,7 @@ def GetNombreMp3():
 def PrintMusique(fenetre, page):
     global page_actuelle
     page_actuelle = page
-    titre = police_2.render("Musique", 1, (0, 255, 0))
+    titre = police_2.render("Musique", 1, Global.COLOR)
     fenetre.blit(titre, (2, 50))
     height = 90
     page -= 1
@@ -210,7 +225,7 @@ def PrintMusique(fenetre, page):
         if n == 15:
             width = 120
             height = 90
-        label = police.render(musique, 1, (0, 255, 0))
+        label = police.render(musique, 1, Global.COLOR)
         fenetre.blit(label, (width, height))
         n += 1
         height += 12

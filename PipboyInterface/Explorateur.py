@@ -23,8 +23,6 @@ def InitExplorateur(fenetre):
     cur_page = 0
     SetCurPage(cur_page)
     Print(fenetre, CUR_PATH, cur_page)
-    #TODO CleanExplo()   (je sais pas si c'est utile en fait...)
-    #TODO mettre les positions pour les fleches !
 
 
 def Print(fenetre, path, page):
@@ -32,7 +30,7 @@ def Print(fenetre, path, page):
     global listElm
     listElm = GetListeFichiers(path)
     path = CheckRacine(path)
-    cur = policeDir.render(path, 1, (0, 255, 0))
+    cur = policeDir.render(path, 1, Global.COLOR)
     fenetre.blit(cur, (2, DEBUT))
     height = DEBUT + 30
     for i in range(0, 10):
@@ -40,7 +38,7 @@ def Print(fenetre, path, page):
             break
         if 10 * page + i < len(listElm):
             name = CutName(listElm[10 * page + i])
-            label = police.render(name, 1, (0, 255, 0))
+            label = police.render(name, 1, Global.COLOR)
             fenetre.blit(label, (10, height))
             height += 20
             PrintPage(fenetre, page)
@@ -49,9 +47,17 @@ def Print(fenetre, path, page):
 
 def PrintFirst(fenetre):
     fenetre.fill((0, 0, 0))
-    top = pygame.image.load("Interface/Explorateur/Explorateur-top.png")
-    fleche_haut = pygame.image.load("Interface/Musique/Fleche_droite.png")
-    fleche_bas = pygame.image.load("Interface/Musique/Fleche_gauche.png")
+    top = pygame.image.load("Interface/Explorateur/Explorateur-top-green.png")
+    fleche_haut = pygame.image.load("Interface/Musique/Fleche_droite-green.png")
+    fleche_bas = pygame.image.load("Interface/Musique/Fleche_gauche-green.png")
+    if Global.COLOR.r == 255:
+        top = pygame.image.load("Interface/Explorateur/Explorateur-top-red.png")
+        fleche_haut = pygame.image.load("Interface/Musique/Fleche_droite-red.png")
+        fleche_bas = pygame.image.load("Interface/Musique/Fleche_gauche-red.png")
+    if Global.COLOR.b == 255:
+        top = pygame.image.load("Interface/Explorateur/Explorateur-top-blue.png")
+        fleche_haut = pygame.image.load("Interface/Musique/Fleche_droite-blue.png")
+        fleche_bas = pygame.image.load("Interface/Musique/Fleche_gauche-blue.png")
     fleche_haut = pygame.transform.rotate(fleche_haut, 90)
     fleche_bas = pygame.transform.rotate(fleche_bas, 90)
     fenetre.blit(top, (0, 0))
@@ -63,7 +69,7 @@ def PrintPage(fenetre, page):
     name = (1 + page).__str__()
     name += '/'
     name += (int((len(listElm) / 10) + 1)).__str__()
-    label = police.render(name, 1, (0, 255, 0))
+    label = police.render(name, 1, Global.COLOR)
     fenetre.blit(label, (435, 150))
 
 def GenerationBoutons():
@@ -138,15 +144,6 @@ def DirPrec2(path):
         print("path parent" + path)
     return path
 
-
-def DirPrec(path):
-    if path != ".":
-        if path[-1]=='/':
-            path = path[-1]
-        path = '.'.join(path.split('/')[:-1])
-        if path == "":
-            path="/"
-    return path
 
 # Fonctions secondaires
 

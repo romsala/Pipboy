@@ -52,6 +52,8 @@ while continuer:
                 Musique.ProcessClick(pos)
             if Global.GetScreen() == 1:
                 Explorateur.ProcessClick(fenetre, pos)
+            if Global.GetScreen() == 5:
+                Options.ProcessClick(fenetre, pos)
 
         if event.type == FIN_MUSIQUE:
             if not Musique.loop:
